@@ -71,7 +71,6 @@ def generate_message(file_data):
     match_no = random.randrange(len(array_clean))
     db_match = check_db(array_clean[match_no])
     if not db_match:
-        add_to_db(array_clean[match_no])
         return array_clean[match_no]
     else:
         generate_message(file_name)
@@ -89,7 +88,11 @@ if __name__ == "__main__":
         try:
             file_content = open(DIRECTORY + file_name).read()
             message = generate_message(file_content)
-            api.update_status(status=message)
-            time.sleep(900)
+            try:
+                api.update_status(status=message)
+                add_to_db(message)
+                time.sleep(900)
+            except tweepy.error.TweepError as e:
+                print(message + "not sent, error: " + e)
         except UnicodeDecodeError:
             print(file_name + " not valid")
