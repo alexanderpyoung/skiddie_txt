@@ -93,6 +93,6 @@ if __name__ == "__main__":
                 add_to_db(message)
                 time.sleep(900)
             except tweepy.error.TweepError as e:
-                print(message + "not sent, error: " + e)
+                print(message + "not sent, error: " + str(e))
         except UnicodeDecodeError:
             print(file_name + " not valid")
