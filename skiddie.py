@@ -63,9 +63,8 @@ def add_to_db(message):
     db.cursor().execute("INSERT INTO used(text) values (?)", [message])
     db.commit()
 
-def generate_message(file_name):
-    file_content = open(DIRECTORY + file_name).read()
-    stripped_content = file_content
+def generate_message(file_data):
+    stripped_content = file_data
     regex = re.compile("(?!\.).+?\.|(?! ).+?\.|(?!\.).+?\?|(?! ).+?\?|(?!\.).+?:|(?! ).+\.|(?!\.).+?\n|(?! ).+?\n")
     groups = regex.findall(stripped_content)
     array_clean = create_array(groups)
@@ -87,6 +86,10 @@ if __name__ == "__main__":
         file_list = os.listdir(DIRECTORY)
         file_choice = random.randrange(len(DIRECTORY))
         file_name = file_list[file_choice]
-        message = generate_message(file_name)
-        api.update_status(status=message)
-        time.sleep(900)
+        try:
+            file_content = open(DIRECTORY + file_name).read()
+            message = generate_message(file_content)
+            api.update_status(status=message)
+            time.sleep(900)
+        except UnicodeDecodeError:
+            print(file_name + " not valid")
