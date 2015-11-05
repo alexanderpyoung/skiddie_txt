@@ -11,7 +11,7 @@ def create_array(array_unclean):
         for entry in array_unclean if len(entry) > 12]
 
 def cap_string_length(string):
-    return string if len(string) < 160 else string[0:160]
+    return string if len(string) < 140 else string[0:139]
 
 def check_creds():
     try:
