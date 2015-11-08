@@ -91,8 +91,10 @@ if __name__ == "__main__":
             try:
                 api.update_status(status=message)
                 add_to_db(message)
-                time.sleep(900)
+                time.sleep(600)
             except tweepy.error.TweepError as e:
-                print(message + "not sent, error: " + str(e))
+                print("message not sent, error:" + str(e.response))
         except UnicodeDecodeError:
             print(file_name + " not valid")
+        except ValueError:
+            print(filename + " produced ValueError")
